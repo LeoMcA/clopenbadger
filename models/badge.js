@@ -16,6 +16,16 @@ function maxLength(field, length) {
   return [lengthValidator, msg];
 }
 
+function isPng(field) {
+  function pngValidator() {
+    if (!this[field]) return true;
+    if (this[field].toString('hex', 0, 8) == "89504e470d0a1a0a") return true;
+    else return false;
+  }
+  var msg = 'isPng';
+  return [pngValidator, msg];
+}
+
 var BehaviorSchema = new Schema({
   shortname: {
     type: String,
@@ -85,7 +95,15 @@ var BadgeSchema = new Schema({
   image: {
     type: Buffer,
     required: true,
-    validate: maxLength('image', 256 * 1024)
+    //validate: maxLength('image', 256 * 1024)
+    //validate: isPng('image')
+    validate: [{
+      validator: maxLength('image', 256 * 1024)[0],
+      msg: maxLength('image', 256 * 1024)[1]
+    }, {
+      validator: isPng('image')[0],
+      msg: isPng('image')[1]
+    }]
   }
 });
 var Badge = db.model('Badge', BadgeSchema);
