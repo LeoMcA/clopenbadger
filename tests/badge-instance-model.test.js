@@ -15,7 +15,7 @@ test.applyFixtures({
     name: 'Link Badge, basic',
     shortname: 'link-basic',
     description: 'For doing links.',
-    image: Buffer(128),
+    image: test.asset('sample.png'),
     behaviors: [{ shortname: 'link', count: 5 }]
   }),
   'instance': new BadgeInstance({

@@ -20,7 +20,7 @@ test.applyFixtures({
     name: 'Link Badge, basic',
     shortname: 'link-basic',
     description: 'For doing links.',
-    image: Buffer(128),
+    image: test.asset('sample.png'),
     behaviors: [
       { shortname: 'link', count: 5 }
     ]
@@ -29,7 +29,7 @@ test.applyFixtures({
     name: 'Link Badge, advanced',
     shortname: 'link-advanced',
     description: 'For doing links, but like, a lot of them',
-    image: Buffer(128),
+    image: test.asset('sample.png'),
     behaviors: [
       { shortname: 'link', count: 15 }
     ]
@@ -38,7 +38,7 @@ test.applyFixtures({
     name : 'Commenting badge',
     shortname: 'comment',
     description: 'For doing lots of comments.',
-    image: Buffer(128),
+    image: test.asset('sample.png'),
     behaviors: [
       { shortname: 'comment', count: 1 }
     ]

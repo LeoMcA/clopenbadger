@@ -95,8 +95,6 @@ var BadgeSchema = new Schema({
   image: {
     type: Buffer,
     required: true,
-    //validate: maxLength('image', 256 * 1024)
-    //validate: isPng('image')
     validate: [{
       validator: maxLength('image', 256 * 1024)[0],
       msg: maxLength('image', 256 * 1024)[1]

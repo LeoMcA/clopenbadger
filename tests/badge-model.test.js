@@ -37,11 +37,27 @@ test.applyFixtures(fixtures, function () {
     });
   });
 
+  test('Badge#validate: image not a png', function (t) {
+    var errorKeys;
+    var badge = validBadge();
+    var image = test.asset('sample.jpg');
+    badge.image = image;
+    badge.validate(function (err) {
+      t.ok(err, 'should have errors');
+      errorKeys = Object.keys(err.errors);
+      t.same(errorKeys, ['image'], 'should only have one error');
+      t.same(err.errors['image'].type, 'isPng', 'should be an isPng error');
+      t.end();
+    });
+  });
+
   test('Badge#validate: image too big', function (t) {
     var errorKeys;
     var badge = validBadge();
     var length = 257 * 1024
-    badge.image = Buffer(length);
+    var buffer = new Buffer(length);
+    buffer.write("89504e470d0a1a0a", 'hex');
+    badge.image = buffer;
     badge.validate(function (err) {
       t.ok(err, 'should have errors');
       errorKeys = Object.keys(err.errors);
