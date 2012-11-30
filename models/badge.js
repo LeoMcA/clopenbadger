@@ -5,7 +5,7 @@ var util = require('../lib/util');
 var Issuer = require('./issuer');
 var phraseGenerator = require('../lib/phrases');
 var Schema = mongoose.Schema;
-
+const PNG_IDENTIFIER = '89504e470d0a1a0a';
 
 function maxLength(field, length) {
   function lengthValidator() {
@@ -13,17 +13,25 @@ function maxLength(field, length) {
     return this[field].length <= length;
   }
   var msg = 'maxLength';
-  return [lengthValidator, msg];
+  return {
+    validator: lengthValidator,
+    msg: msg
+  };
 }
 
 function isPng(field) {
   function pngValidator() {
     if (!this[field]) return true;
-    if (this[field].toString('hex', 0, 8) == "89504e470d0a1a0a") return true;
-    else return false;
+    if (this[field].toString('hex', 0, 8) == PNG_IDENTIFIER) {
+      return true;
+    }
+    return false;
   }
   var msg = 'isPng';
-  return [pngValidator, msg];
+  return {
+    validator: pngValidator,
+    msg: msg
+  };
 }
 
 var BehaviorSchema = new Schema({
@@ -95,13 +103,7 @@ var BadgeSchema = new Schema({
   image: {
     type: Buffer,
     required: true,
-    validate: [{
-      validator: maxLength('image', 256 * 1024)[0],
-      msg: maxLength('image', 256 * 1024)[1]
-    }, {
-      validator: isPng('image')[0],
-      msg: isPng('image')[1]
-    }]
+    validate: [maxLength('image', 256 * 1024), isPng('image')]
   }
 });
 var Badge = db.model('Badge', BadgeSchema);

@@ -3,6 +3,7 @@ const env = require('../lib/environment');
 const util = require('../lib/util');
 const db = require('../models');
 const Badge = require('../models/badge');
+const PNG_IDENTIFIER = '89504e470d0a1a0a';
 
 function validBadge() {
   return new Badge({
@@ -56,7 +57,7 @@ test.applyFixtures(fixtures, function () {
     var badge = validBadge();
     var length = 257 * 1024
     var buffer = new Buffer(length);
-    buffer.write("89504e470d0a1a0a", 'hex');
+    buffer.write(PNG_IDENTIFIER, 'hex');
     badge.image = buffer;
     badge.validate(function (err) {
       t.ok(err, 'should have errors');
